@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Smart Load Test</title>
+		<script src="jquery.min.js"></script>
+		<style>
+			.textBox {
+				background-color: #333;
+				-webkit-transition: background-color 1000ms linear;
+			    -moz-transition: background-color 1000ms linear;
+			    -o-transition: background-color 1000ms linear;
+			    -ms-transition: background-color 1000ms linear;
+			    transition: background-color 1000ms linear;
+			}
+			.textBox, .imageBox {
+				margin: 10px 10px 0;
+				height: 100px;
+			}
+			.textBox.active {
+				background-color: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://placekitten.com/100/100"/>
+		</div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
+
+		<script src="../smartload.min.js"></script>
+		<script>
+			// Settings can be modified globally for all instances
+			$.fn.smartLoad.defaults.delay = 0;
+			$.fn.smartLoad.defaults.threshold = 0;
+			$.fn.smartLoad.defaults.throttle = 100; 
+			// Initialise things
+			$(function(){
+				$(".textBox").smartLoad(function(){
+					$(this).addClass('active');
+				});
+				// Settings can also be modified per group
+				$(".imageBox img").smartLoad(function(){
+					$(this).attr('src',$(this).data('src'));
+				},{threshold:200});
+			});
+		</script>
+	</body>
+</html>
