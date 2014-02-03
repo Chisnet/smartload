@@ -14,7 +14,7 @@ Examples
 
 For a simple lazy loading image you can use something like this:
 
-`
+```html
 <article>
 	<img alt="" data-src="image.jpg"/>
 </article>
@@ -25,6 +25,6 @@ $(function(){
 	});
 });
 </script>
-`
+```
 
 This will copy the image URL in the data into the src attribute when any article image comes into view. You can easily use the same format to do something completely different though, like animate a block of content into view from the side, fade an element in, or trigger an AJAX call for more content at the end of an infinity scrolling page by changing the function that is called when the elements come into view.
