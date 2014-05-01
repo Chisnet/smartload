@@ -20,16 +20,16 @@
 				}
 			}
 		},
-		bind: function(selector, update) {
+		bind: function(key, update) {
 			_slm.listeners.push({
-				'selector': selector,
+				'key': key,
 				'func': update
 			});
 		},
-		unbind: function(selector) {
+		unbind: function(key) {
 			for(index in _slm.listeners) {
 				listener = _slm.listeners[index];
-				if(listener.selector == selector) {
+				if(listener.key == key) {
 					_slm.listeners.splice(index,1);
 				}
 			}
@@ -39,7 +39,7 @@
 	// Main smartload definition
 	$.fn.smartLoad = function(handler, options) {
 		var elements = this;
-		var selector = this.selector;
+		var key = (new Date() * Math.max(0.01, Math.random())).toString(36).replace('.','');
 
 		var opts = $.extend({}, $.fn.smartLoad.defaults, options);
 		var throttle_timer;
@@ -85,18 +85,18 @@
 				var bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
 
 				// Check the top of the element is visible
-				if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary) {
+				if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
 					$this.trigger("smartload");
 					elements = elements.not($this);
 					if(!elements.length) {
-						_slm.unbind(selector);
+						_slm.unbind(key);
 					}
 				}
 			});
 		}
 
 		// Bind to the global manager for events
-		_slm.bind(selector, function(){update();});
+		_slm.bind(key, function(){update();});
 
 		// Trigger once on load
 		$(function(){
