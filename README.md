@@ -64,4 +64,4 @@ $(".imageBox img").smartLoad(function(){
 
 ```
 
-All values default to 0 otherwise.
+Delay and threshold both default to 0 otherwise, while throttle defaults to 100.
