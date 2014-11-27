@@ -44,68 +44,71 @@
 	// Main smartload definition
 	$.fn.smartLoad = function(handler, options) {
 		var elements = this;
-		var key = _slm.get_key();
 
-		var opts = $.extend({}, $.fn.smartLoad.defaults, options);
-		var throttle_timer;
+		if(elements.length > 0) {
+			var key = _slm.get_key();
 
-		// Intialise each element
-		this.each(function() {
-			var self = this;
-			var $self = $(self);
-			self.loaded = false;
-			$self.one("smartload", function() {
-				if(!this.loaded) {
-					if(opts.delay) {
-						setTimeout(function(){handler.call(self);}, opts.delay);
-					}
-					else {
-						handler.call(self);
-					}
-					self.loaded = true;
-				}
-			});
-		});
+			var opts = $.extend({}, $.fn.smartLoad.defaults, options);
+			var throttle_timer;
 
-		function update() {
-			if(opts.throttle) {
-				if(typeof(throttle_timer) == 'undefined') {
-					throttle_timer = setTimeout(function(){
-						trigger();
-						throttle_timer = undefined;
-					}, opts.throttle);
-				}
-			}
-			else {
-				trigger();
-			}
-		}
-
-		// Function that is called when the window loads, scrolls or resizes
-		function trigger() {
-			var $window = $(window);
-			var top_boundary = $window.scrollTop() - opts.threshold;
-			var bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
+			// Intialise each element
 			elements.each(function() {
-				var $this = $(this);
-				// Check the top of the element is visible
-				if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
-					$this.trigger("smartload");
-					elements = elements.not($this);
-					if(!elements.length) {
-						_slm.unbind(key);
+				var self = this;
+				var $self = $(self);
+				self.loaded = false;
+				$self.one("smartload", function() {
+					if(!this.loaded) {
+						if(opts.delay) {
+							setTimeout(function(){handler.call(self);}, opts.delay);
+						}
+						else {
+							handler.call(self);
+						}
+						self.loaded = true;
+					}
+				});
+			});
+
+			function update() {
+				if(opts.throttle) {
+					if(typeof(throttle_timer) == 'undefined') {
+						throttle_timer = setTimeout(function(){
+							trigger();
+							throttle_timer = undefined;
+						}, opts.throttle);
 					}
 				}
+				else {
+					trigger();
+				}
+			}
+
+			// Function that is called when the window loads, scrolls or resizes
+			function trigger() {
+				var $window = $(window);
+				var top_boundary = $window.scrollTop() - opts.threshold;
+				var bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
+				elements.each(function() {
+					var $this = $(this);
+					// Check the top of the element is visible
+					if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
+						$this.trigger("smartload");
+						elements = elements.not($this);
+						if(!elements.length) {
+							_slm.unbind(key);
+						}
+					}
+				});
+			}
+
+			// Bind to the global manager for events
+			_slm.bind(key, function(){update();});
+
+			// Trigger once on DOM ready
+			$(function(){
+				update();
 			});
 		}
-
-		// Bind to the global manager for events
-		_slm.bind(key, function(){update();});
-
-		// Trigger once on load
-		$(function(){
-			update();
-		});
 
 		// Chainable
 		return this;
