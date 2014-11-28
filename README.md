@@ -7,7 +7,7 @@ A handy jQuery plugin for smart progressive loading/animating of any content as 
 Why?
 ----
 
-While working on a new responsive site I was looking into ways to minimize the inital page weight, and also make the experience more appealing. There were already many solutions available for lazy loading of images, and adding visual effects, but I wanted something very small and simple where I was in full control of the effects, so out together this minimal jQuery plugin.
+While working on a new responsive site I was looking into ways to minimize the inital page weight, and also make the experience more appealing. There were already many solutions available for lazy loading of images, and adding visual effects, but I wanted something very small and simple where I was in full control of the effects, so put together this minimal jQuery plugin.
 
 
 Examples
@@ -38,7 +38,9 @@ Configuration
 The plugin only comes with a select few options, as follows:
 
 threshold - Controls how close to the visible area the loading function will be triggered, in pixels.
+
 delay - Adds a delay in milliseconds before the loading function is triggered
+
 throttle - Throttles how often the loading functions can be triggered, handy if you notice problems on JavaScript heavy pages.
 
 These options can be set globally for all smartload instances, like so:
