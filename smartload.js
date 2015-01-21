@@ -1,3 +1,4 @@
+/*! Smartload v1.1.0 */
 (function($) {
 	// Manager for all smartloads on a page to reduce event binding
 	window._slm = {
@@ -42,8 +43,14 @@
 	}
 	_slm.init();
 	// Main smartload definition
-	$.fn.smartLoad = function(handler, options) {
+	$.fn.smartLoad = function(load_handler, unload_handler, options) {
 		var elements = this;
+
+		// Resolve call params - unload_handler is optional
+		if(typeof(unload_handler) == 'object') {
+			options = unload_handler;
+			unload_handler = undefined;
+		}
 
 		if(elements.length > 0) {
 			var key = _slm.get_key();
@@ -51,22 +58,29 @@
 			var opts = $.extend({}, $.fn.smartLoad.defaults, options);
 			var throttle_timer;
 
+			// Inherit load/unload delay and threshold from generic setting unless provided
+			if(typeof(opts.load_delay) == 'undefined'){ opts.load_delay == opts.delay; }
+			if(typeof(opts.load_threshold) == 'undefined'){ opts.load_threshold == opts.threshold; }
+			if(typeof(opts.unload_delay) == 'undefined'){ opts.unload_delay == opts.delay; }
+			if(typeof(opts.unload_threshold) == 'undefined'){ opts.load_threshold == opts.threshold; }
+
 			// Intialise each element
 			elements.each(function() {
 				var self = this;
 				var $self = $(self);
 				self.loaded = false;
-				$self.one("smartload", function() {
-					if(!this.loaded) {
+				var smartload_function = function() {
+					if(!self.loaded) {
 						if(opts.delay) {
-							setTimeout(function(){handler.call(self);}, opts.delay);
+							setTimeout(function(){load_handler.call(self);}, opts.delay);
 						}
 						else {
-							handler.call(self);
+							load_handler.call(self);
 						}
 						self.loaded = true;
 					}
-				});
+				};
+				$self.one("smartload", smartload_function);
 			});
 
 			function update() {
@@ -115,8 +129,10 @@
 	};
 	// Default config
 	$.fn.smartLoad.defaults = {
+		// delay and threshold settings are used for both load and unload unless overridden
 		delay: 0,
 		threshold: 0,
-		throttle: 100
+		throttle: 100,
+		repeatable: false
 	};
 })(jQuery);
