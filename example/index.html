@@ -35,16 +35,16 @@
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
@@ -52,16 +52,16 @@
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Kitten!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
 		</div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
@@ -75,13 +75,16 @@
 			$.fn.smartLoad.defaults.throttle = 100; 
 			// Initialise things
 			$(function(){
-				$(".textBox").smartLoad(function(){
-					$(this).addClass('active');
-				});
+				$(".textBox").smartLoad(
+					function(){$(this).addClass('active');},
+					function(){$(this).removeClass('active');},
+					{repeatable:true}
+				);
 				// Settings can also be modified per group
-				$(".imageBox img").smartLoad(function(){
-					$(this).attr('src',$(this).data('src'));
-				},{threshold:200});
+				$(".imageBox img").smartLoad(
+					function(){$(this).attr('src',$(this).data('src'));},
+					{threshold:200}
+				);
 			});
 		</script>
 	</body>
