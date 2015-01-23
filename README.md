@@ -1,7 +1,7 @@
 Smartload
 =========
 
-A handy jQuery plugin for smart progressive loading/animating of any content as it comes into view
+A handy jQuery plugin for smart progressive loading/unloading/animating of any content as it comes into (or leaves) view
 
 
 Why?
@@ -43,6 +43,15 @@ delay - Adds a delay in milliseconds before the loading function is triggered
 
 throttle - Throttles how often the loading functions can be triggered, handy if you notice problems on JavaScript heavy pages.
 
+repeatable - If defining both load and unload events, whether or not the actions repeat
+
+The delay and threshold can also be specified individually for loading and unloading:
+
+load_threshold
+load_delay
+unload_threshold
+unload_delay
+
 These options can be set globally for all smartload instances, like so:
 
 ```html
@@ -66,4 +75,4 @@ $(".imageBox img").smartLoad(function(){
 
 ```
 
-Delay and threshold both default to 0 otherwise, while throttle defaults to 100.
+Delays and thresholds both default to 0 otherwise, while throttle defaults to 100.
