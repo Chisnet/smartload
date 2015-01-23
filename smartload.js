@@ -1,4 +1,4 @@
-/*! Smartload v1.1.0 */
+/*! Smartload v1.1.0 - https://github.com/Chisnet/smartload */
 (function(window, $) {
 	'use strict';
 	// Manager for all smartloads on a page to reduce event binding
