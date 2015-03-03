@@ -15,7 +15,7 @@
                 window._slm.triggerListeners("orientationchange");
             });
         },
-        triggerListeners: function() {
+        triggerListeners: function(eventType) {
             var listener;
             if(window._slm.listeners.length) {
                 for(var index=0; index < window._slm.listeners.length; index++) {
@@ -55,6 +55,10 @@
             unload_handler = undefined;
         }
         opts = $.extend({}, $.fn.smartLoad.defaults, options);
+        // If responsiveness is enabled ensure that triggers are forced to be repeatable
+        if(opts.responsive) {
+            opts.repeatable = true;
+        }
 
         // Function that is called when the window loads, scrolls or resizes
         function trigger(eventType) {
@@ -63,7 +67,7 @@
                 var $this = $(this);
                 // Check the top of the element is visible
                 if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
-                    if(!this.loaded || opts.responsive && (eventType === 'resize' || eventType === 'orientationchange')) {
+                    if(!this.loaded || opts.responsive) {
                         $this.trigger("smartload");
                         if(!opts.repeatable && !unload_handler) {
                             elements = elements.not($this);
@@ -112,14 +116,16 @@
                 var self = this, $self = $(self), smartload_function, smartunload_function;
                 self.loaded = false;
                 smartload_function = function() {
-                    if(opts.delay) {
-                        window.setTimeout(function(){load_handler.call(self);}, opts.delay);
+                    if(!self.loaded || opts.responsive) {
+                        if(opts.delay) {
+                            window.setTimeout(function(){load_handler.call(self);}, opts.delay);
+                        }
+                        else {
+                            load_handler.call(self);
+                        }
+                        if(!opts.repeatable){$(self).unbind("smartload");}
+                        self.loaded = true;
                     }
-                    else {
-                        load_handler.call(self);
-                    }
-                    if(!opts.repeatable){$(self).unbind("smartload");}
-                    self.loaded = true;
                 };
                 $self.bind("smartload", smartload_function);
                 if(unload_handler) {
