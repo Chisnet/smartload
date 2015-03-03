@@ -8,11 +8,11 @@
         init: function() {
             // Trigger when the window is resized or scrolled
             $(window).bind("resize", function() {
-                window._slm.triggerListeners();
+                window._slm.triggerListeners("resize");
             }).bind("scroll", function() {
-                window._slm.triggerListeners();
+                window._slm.triggerListeners("scroll");
             }).bind("orientationchange", function() {
-                window._slm.triggerListeners();
+                window._slm.triggerListeners("orientationchange");
             });
         },
         triggerListeners: function() {
@@ -20,7 +20,7 @@
             if(window._slm.listeners.length) {
                 for(var index=0; index < window._slm.listeners.length; index++) {
                     listener = window._slm.listeners[index];
-                    listener.func.call();
+                    listener.func.call(null, eventType);
                 }
             }
         },
@@ -57,14 +57,13 @@
         opts = $.extend({}, $.fn.smartLoad.defaults, options);
 
         // Function that is called when the window loads, scrolls or resizes
-        function trigger() {
+        function trigger(eventType) {
             var $window = $(window), top_boundary = $window.scrollTop() - opts.threshold, bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
-
             elements.each(function() {
                 var $this = $(this);
                 // Check the top of the element is visible
                 if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
-                    if(!this.loaded) {
+                    if(!this.loaded || opts.responsive && (eventType === 'resize' || eventType === 'orientationchange')) {
                         $this.trigger("smartload");
                         if(!opts.repeatable && !unload_handler) {
                             elements = elements.not($this);
@@ -86,17 +85,17 @@
             });
         }
         // Throttling function
-        function update() {
+        function update(eventType) {
             if(opts.throttle) {
                 if(throttle_timer === undefined) {
                     throttle_timer = window.setTimeout(function(){
-                        trigger();
+                        trigger(eventType);
                         throttle_timer = undefined;
                     }, opts.throttle);
                 }
             }
             else {
-                trigger();
+                trigger(eventType);
             }
         }
 
@@ -113,16 +112,14 @@
                 var self = this, $self = $(self), smartload_function, smartunload_function;
                 self.loaded = false;
                 smartload_function = function() {
-                    if(!self.loaded) {
-                        if(opts.delay) {
-                            window.setTimeout(function(){load_handler.call(self);}, opts.delay);
-                        }
-                        else {
-                            load_handler.call(self);
-                        }
-                        if(!opts.repeatable){$(self).unbind("smartload");}
-                        self.loaded = true;
+                    if(opts.delay) {
+                        window.setTimeout(function(){load_handler.call(self);}, opts.delay);
                     }
+                    else {
+                        load_handler.call(self);
+                    }
+                    if(!opts.repeatable){$(self).unbind("smartload");}
+                    self.loaded = true;
                 };
                 $self.bind("smartload", smartload_function);
                 if(unload_handler) {
@@ -143,7 +140,7 @@
             });
 
             // Bind to the global manager for events
-            window._slm.bind(key, function(){update();});
+            window._slm.bind(key, function(eventType){update(eventType);});
 
             // Trigger once on DOM ready
             $(function(){
@@ -160,6 +157,7 @@
         delay: 0,
         threshold: 0,
         throttle: 100,
-        repeatable: false
+        repeatable: false,
+        responsive: false
     };
 })(window, jQuery);
