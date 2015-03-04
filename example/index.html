@@ -12,7 +12,7 @@
 			    -ms-transition: background-color 1000ms linear;
 			    transition: background-color 1000ms linear;
 			}
-			.textBox, .imageBox {
+			.textBox, .imageBox, .colourBox {
 				margin: 10px 10px 0;
 				height: 100px;
 			}
@@ -27,42 +27,33 @@
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="textBox"></div>
-		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
-		</div>
-		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
-		</div>
-		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
-		</div>
-		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
-		</div>
+		<div class="colourBox"></div>
+		<div class="colourBox"></div>
+		<div class="colourBox"></div>
+		<div class="colourBox"></div>
+		<div class="colourBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://placehold.it/100x100"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://placehold.it/100x100"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://placehold.it/100x100"/>
 		</div>
 		<div class="imageBox">
-			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://dummyimage.com/100x100/000/fff"/>
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://placehold.it/100x100"/>
 		</div>
+		<div class="imageBox">
+			<img src="1x1t.gif" width="100" height="100" alt="Dummy!" data-src="http://placehold.it/100x100"/>
+		</div>
+		<div class="textBox"></div>
+		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
 		<div class="textBox"></div>
@@ -84,6 +75,15 @@
 				$(".imageBox img").smartLoad(
 					function(){$(this).attr('src',$(this).data('src'));},
 					{threshold:200}
+				);
+				$(".colourBox").smartLoad(
+					function(){
+						var red_shade = Math.floor(Math.min(($(this).innerWidth() / 1000)*255,255));
+						$(this).css({
+							'backgroundColor': 'rgba(' + red_shade + ',0,0,1)'
+						});
+					},
+					{responsive:true}
 				);
 			});
 		</script>
