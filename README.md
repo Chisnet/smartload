@@ -45,6 +45,8 @@ The plugin only comes with a select few options, as follows:
 
 * repeatable - If defining both load and unload events, whether or not the actions repeat
 
+* responsive - Will trigger the loading on resizing regardless of whether the element is entering or leaving view.
+
 The delay and threshold can also be specified individually for loading and unloading:
 
 * load_threshold
@@ -60,6 +62,7 @@ $.fn.smartLoad.defaults.delay = 0;
 $.fn.smartLoad.defaults.threshold = 0;
 $.fn.smartLoad.defaults.throttle = 100; 
 $.fn.smartload.defaults.repeatable = false;
+$.fn.smartLoad.defaults.responsive = false;
 </script>
 
 ```
@@ -76,4 +79,4 @@ $(".imageBox img").smartLoad(function(){
 
 ```
 
-Delays and thresholds both default to 0 otherwise, while throttle defaults to 100. Repeatable defaults to false.
+Delays and thresholds both default to 0 otherwise, while throttle defaults to 100. Repeatable defaults to false, as does responsive.

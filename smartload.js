@@ -1,5 +1,13 @@
-/*! Smartload v1.1.0 - https://github.com/Chisnet/smartload */
-(function(window, $) {
+/*! Smartload v1.2.0 - https://github.com/Chisnet/smartload */
+(function (factory) {
+    if ( typeof define === 'function' && define.amd ) {
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory;
+    } else {
+        factory(jQuery);
+    }
+}(function($) {
     'use strict';
     // Manager for all smartloads on a page to reduce event binding
     window._slm = {
@@ -166,4 +174,4 @@
         repeatable: false,
         responsive: false
     };
-})(window, jQuery);
+}));
