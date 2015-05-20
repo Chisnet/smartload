@@ -124,32 +124,34 @@
                 var self = this, $self = $(self), smartload_function, smartunload_function;
                 self.loaded = false;
                 smartload_function = function(e) {
-                    if(!self.loaded || opts.responsive) {
-                        if(opts.delay) {
-                            window.setTimeout(function(){load_handler.call(self);}, opts.delay);
+                    if(e.target == e.currentTarget) {
+                        if(!self.loaded || opts.responsive) {
+                            if(opts.delay) {
+                                window.setTimeout(function(){load_handler.call(self);}, opts.delay);
+                            }
+                            else {
+                                load_handler.call(self);
+                            }
+                            if(!opts.repeatable){$(self).unbind("smartload");}
+                            self.loaded = true;
                         }
-                        else {
-                            load_handler.call(self);
-                        }
-                        if(!opts.repeatable){$(self).unbind("smartload");}
-                        self.loaded = true;
                     }
-                    e.stopPropagation();
                 };
                 $self.bind("smartload", smartload_function);
                 if(unload_handler) {
                     smartunload_function = function(e) {
-                        if(self.loaded) {
-                            if(opts.delay) {
-                                window.setTimeout(function(){unload_handler.call(self);}, opts.delay);
+                        if(e.target == e.currentTarget) {
+                            if(self.loaded) {
+                                if(opts.delay) {
+                                    window.setTimeout(function(){unload_handler.call(self);}, opts.delay);
+                                }
+                                else {
+                                    unload_handler.call(self);
+                                }
+                                if(!opts.repeatable){$(self).unbind("smartunload");}
+                                self.loaded = false;
                             }
-                            else {
-                                unload_handler.call(self);
-                            }
-                            if(!opts.repeatable){$(self).unbind("smartunload");}
-                            self.loaded = false;
                         }
-                        e.stopPropagation();
                     };
                     $self.bind("smartunload", smartunload_function);
                 }
