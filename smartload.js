@@ -1,4 +1,4 @@
-/*! Smartload v1.2.0 - https://github.com/Chisnet/smartload */
+/*! Smartload v1.2.1 - https://github.com/Chisnet/smartload */
 (function (factory) {
     if ( typeof define === 'function' && define.amd ) {
         define(['jquery'], factory);
@@ -123,7 +123,7 @@
             elements.each(function() {
                 var self = this, $self = $(self), smartload_function, smartunload_function;
                 self.loaded = false;
-                smartload_function = function() {
+                smartload_function = function(e) {
                     if(!self.loaded || opts.responsive) {
                         if(opts.delay) {
                             window.setTimeout(function(){load_handler.call(self);}, opts.delay);
@@ -134,10 +134,11 @@
                         if(!opts.repeatable){$(self).unbind("smartload");}
                         self.loaded = true;
                     }
+                    e.stopPropagation();
                 };
                 $self.bind("smartload", smartload_function);
                 if(unload_handler) {
-                    smartunload_function = function() {
+                    smartunload_function = function(e) {
                         if(self.loaded) {
                             if(opts.delay) {
                                 window.setTimeout(function(){unload_handler.call(self);}, opts.delay);
@@ -148,6 +149,7 @@
                             if(!opts.repeatable){$(self).unbind("smartunload");}
                             self.loaded = false;
                         }
+                        e.stopPropagation();
                     };
                     $self.bind("smartunload", smartunload_function);
                 }
