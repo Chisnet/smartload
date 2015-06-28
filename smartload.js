@@ -23,12 +23,12 @@
                 window._slm.triggerListeners("orientationchange");
             });
         },
-        triggerListeners: function(eventType) {
+        triggerListeners: function() {
             var listener;
             if(window._slm.listeners.length) {
                 for(var index=0; index < window._slm.listeners.length; index++) {
                     listener = window._slm.listeners[index];
-                    listener.func.call(null, eventType);
+                    listener.func.call(null);
                 }
             }
         },
@@ -69,7 +69,7 @@
         }
 
         // Function that is called when the window loads, scrolls or resizes
-        function trigger(eventType) {
+        function trigger() {
             var $window = $(window), top_boundary = $window.scrollTop() - opts.threshold, bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
             elements.each(function() {
                 var $this = $(this);
@@ -97,17 +97,17 @@
             });
         }
         // Throttling function
-        function update(eventType) {
+        function update() {
             if(opts.throttle) {
                 if(throttle_timer === undefined) {
                     throttle_timer = window.setTimeout(function(){
-                        trigger(eventType);
+                        trigger();
                         throttle_timer = undefined;
                     }, opts.throttle);
                 }
             }
             else {
-                trigger(eventType);
+                trigger();
             }
         }
 
@@ -158,7 +158,7 @@
             });
 
             // Bind to the global manager for events
-            window._slm.bind(key, function(eventType){update(eventType);});
+            window._slm.bind(key, function(){update();});
 
             // Trigger once on DOM ready
             $(function(){
