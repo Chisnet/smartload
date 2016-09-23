@@ -1,4 +1,4 @@
-/*! Smartload v1.2.1 - https://github.com/Chisnet/smartload */
+/*! Smartload v1.2.2 - https://github.com/Chisnet/smartload */
 (function (factory) {
     if ( typeof define === 'function' && define.amd ) {
         define(['jquery'], factory);
@@ -70,30 +70,32 @@
 
         // Function that is called when the window loads, scrolls or resizes
         function trigger() {
-            var $window = $(window), top_boundary = $window.scrollTop() - opts.threshold, bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
-            elements.each(function() {
-                var $this = $(this);
-                // Check the top of the element is visible
-                if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
-                    if(!this.loaded || opts.responsive) {
-                        $this.trigger("smartload");
-                        if(!opts.repeatable && !unload_handler) {
+            window.requestAnimationFrame(function(){
+                var $window = $(window), top_boundary = $window.scrollTop() - opts.threshold, bottom_boundary = $window.scrollTop() + $window.height() + opts.threshold;
+                elements.each(function() {
+                    var $this = $(this);
+                    // Check the top of the element is visible
+                    if($this.offset().top + $this.height() >= top_boundary && $this.offset().top <= bottom_boundary && $this.is(':visible')) {
+                        if(!this.loaded || opts.responsive) {
+                            $this.trigger("smartload");
+                            if(!opts.repeatable && !unload_handler) {
+                                elements = elements.not($this);
+                                if(!elements.length) {
+                                    window._slm.unbind(key);
+                                }
+                            }
+                        }
+                    }
+                    else if($this.is(':visible') && this.loaded) {
+                        if(!opts.repeatable) {
                             elements = elements.not($this);
                             if(!elements.length) {
                                 window._slm.unbind(key);
                             }
                         }
+                        $this.trigger("smartunload");
                     }
-                }
-                else if($this.is(':visible') && this.loaded) {
-                    if(!opts.repeatable) {
-                        elements = elements.not($this);
-                        if(!elements.length) {
-                            window._slm.unbind(key);
-                        }
-                    }
-                    $this.trigger("smartunload");
-                }
+                });
             });
         }
         // Throttling function
