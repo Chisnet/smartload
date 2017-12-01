@@ -1,4 +1,4 @@
-/*! Smartload v1.2.2 - https://github.com/Chisnet/smartload */
+/*! Smartload v1.3.0 - https://github.com/Chisnet/smartload */
 (function (factory) {
     if ( typeof define === 'function' && define.amd ) {
         define(['jquery'], factory);
@@ -14,13 +14,21 @@
         listeners: [],
         key_counter: 0,
         init: function() {
+            // Check passive listener support
+            var passiveSupported = false;
+            try {
+                var options = Object.defineProperty({}, "passive", {
+                    get: function() {
+                        passiveSupported = true;
+                    }
+                });
+                window.addEventListener("test", null, options);
+            } catch(err) {}
             // Trigger when the window is resized or scrolled
-            $(window).bind("resize", function() {
-                window._slm.triggerListeners("resize");
-            }).bind("scroll", function() {
-                window._slm.triggerListeners("scroll");
-            }).bind("orientationchange", function() {
-                window._slm.triggerListeners("orientationchange");
+            ['resize', 'scroll', 'orientationchange'].forEach(function(event_type){
+                window.addEventListener(event_type, function(e){
+                    window._slm.triggerListeners(e.type);
+                }, passiveSupported ? { passive: true } : false)
             });
         },
         triggerListeners: function() {
